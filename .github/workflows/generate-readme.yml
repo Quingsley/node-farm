@@ -1,36 +1,32 @@
 on:
   repository_dispatch:
     types: [generate-readme]
+
 jobs:
   generate-readme:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Generate README
-        run: |
-          # Write your script to generate the README file here
-          # For example, you could use a tool like pandoc to convert a markdown file to a README file
-          pandoc -o README.md input.md
-
+    - uses: actions/checkout@v2
+    - name: Generate README
+      run: |
         # Extract the repository's name from the repository's URL
-REPO_NAME=$(git config --get remote.origin.url | sed -n 's#.*/\(.*\)\.git#\1#p')
+        REPO_NAME=$(git config --get remote.origin.url | sed -n 's#.*/\(.*\)\.git#\1#p')
 
-# Extract the repository's description from the repository's package.json file (if it exists)
-REPO_DESCRIPTION=$(jq -r '.description' package.json 2> /dev/null)
+        # Extract the repository's description from the repository's package.json file (if it exists)
+        REPO_DESCRIPTION=$(jq -r '.description' package.json 2> /dev/null)
 
-# If a description was not found in package.json, try to extract it from the pubspec.yaml file
-if [ -z "$REPO_DESCRIPTION" ]; then
-  REPO_DESCRIPTION=$(grep '^description:' pubspec.yaml | sed -n 's/description: *//p')
-fi
+        # If a description was not found in package.json, try to extract it from the pubspec.yaml file
+        if [ -z "$REPO_DESCRIPTION" ]; then
+          REPO_DESCRIPTION=$(grep '^description:' pubspec.yaml | sed -n 's/description: *//p')
+        fi
 
-# If a description was not found, use the repository's name as the description
-if [ -z "$REPO_DESCRIPTION" ]; then
-  REPO_DESCRIPTION=$REPO_NAME
-fi
+        # If a description was not found, use the repository's name as the description
+        if [ -z "$REPO_DESCRIPTION" ]; then
+          REPO_DESCRIPTION=$REPO_NAME
+        fi
 
-# Generate the README file
-echo "# $REPO_NAME" > README.md
-echo "" >> README.md
-echo "## Description" >> README.md
-echo "$REPO_DESCRIPTION" >> README.md
-
+        # Generate the README file
+        echo "# $REPO_NAME" > README.md
+        echo "" >> README.md
+        echo "## Description" >> README.md
+        echo "$REPO_DESCRIPTION" >> README.md
