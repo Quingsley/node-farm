@@ -2,6 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const products = [];
+
 module.exports = class Product {
   constructor(
     id,
@@ -23,6 +25,10 @@ module.exports = class Product {
     this.price = price;
     this.organic = organic;
     this.description = description;
+  }
+
+  save() {
+    return products.push(this);
   }
 
   static fetchAll(callBack) {
