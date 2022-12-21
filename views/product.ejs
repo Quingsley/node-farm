@@ -74,10 +74,15 @@
                 </p>
             </div>
 
-            <a href="#" class="product__link">
-                <span class="emoji-left">🛒</span>
-                <span>Add to shopping card (<%= currentProduct.price %>€)</span>
-            </a>
+            <form action="/cart" method="post">
+                <a href="#" class="product__link">
+                    <span class="emoji-left">🛒</span>
+                    <span>Add to shopping cart (<%= currentProduct.price %>€)</span>
+                    <input type="hidden" name="productId" value="<%= currentProduct.id %>">
+
+                </a>
+            </form>
+
 
             <p class="product__description">
                 <%= currentProduct.description %>

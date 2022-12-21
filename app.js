@@ -4,6 +4,8 @@ const path = require('path');
 const overview = require('./routes/overview');
 const productDetail = require('./routes/product-detail');
 const errorPage = require('./routes/404');
+const cart = require('./routes/cart');
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -13,6 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(overview);
 app.use('/productdetail', productDetail);
+app.use('/cart', cart);
 app.use(errorPage);
 
 app.listen(3000, () => console.log('Server running at http://localhost:3000'));
